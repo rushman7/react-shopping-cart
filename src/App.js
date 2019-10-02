@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import data from './data';
 import { ProductContext } from './contexts/ProductContext';
@@ -8,15 +8,23 @@ import Products from './components/Products';
 import ShoppingCart from './components/ShoppingCart';
 
 function App() {
+	const localData = JSON.parse(window.localStorage.getItem('CartStorage')) || []
 	const [products] = useState(data);
-	const [cart, setCart] = useState([]);
+	const [cart, setCart] = useState(localData);
+
+	useEffect(() => {
+		window.localStorage.setItem('CartStorage', JSON.stringify(cart))
+	})
 
 	const addItem = item => {
-		setCart([...cart, item]);
+		if (![...cart].includes(item)) {
+			setCart([...cart, item])
+		} else {
+			alert('You already have this book in your cart!')
+		}
 	};
 
 	const removeItem = id => {
-		console.log(id)
 		setCart(cart.filter(item => item.id !== id));
 	}
 
