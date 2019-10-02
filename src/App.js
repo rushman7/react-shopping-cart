@@ -8,13 +8,13 @@ import Products from './components/Products';
 import ShoppingCart from './components/ShoppingCart';
 
 function App() {
-	const localData = JSON.parse(window.localStorage.getItem('CartStorage')) || []
+	const localData = () => JSON.parse(window.localStorage.getItem('CartStorage')) || []
 	const [products] = useState(data);
 	const [cart, setCart] = useState(localData);
 
 	useEffect(() => {
 		window.localStorage.setItem('CartStorage', JSON.stringify(cart))
-	})
+	}, [cart])
 
 	const addItem = item => {
 		if (![...cart].includes(item)) {
